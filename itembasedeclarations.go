@@ -177,5 +177,5 @@ type User struct {
 	NameFormat        string `json:"name_format"`
 	Locale            string `json:"locale"`
 	Email             string `json:"email"`
-	PreferredCurrency string `json:"preffered_currency"`
+	PreferredCurrency string `json:"preferred_currency"`
 }
