@@ -1,5 +1,12 @@
 package itembase
 
+// TODO: Some entities/models don't have the full set of fields from the API.
+// Some of the implementation detail structs (Contacts, Billing, pagination
+// containers, etc.) could perhaps be unexported.
+
+// A Profile represents a user profile entity from the itembase API.
+//
+// See http://sandbox.api.itembase.io/swagger-ui/
 type Profile struct {
 	Active    bool   `json:"active"`
 	AvatarURL string `json:"avatar_url"`
@@ -22,6 +29,7 @@ type Profile struct {
 	URL               string `json:"url"`
 }
 
+// An Address represents a mailing address model from the itembase API.
 type Address struct {
 	City    string `json:"city"`
 	Country string `json:"country"`
@@ -30,6 +38,8 @@ type Address struct {
 	Zip     string `json:"zip"`
 }
 
+// A Contact represents a container of contact information from itembase API
+// models.
 type Contact struct {
 	Addresses []Address `json:"addresses"`
 	Emails    []struct {
@@ -38,6 +48,9 @@ type Contact struct {
 	Phones []interface{} `json:"phones"`
 }
 
+// A Buyer represents a buyer entity from the itembase API.
+//
+// See http://sandbox.api.itembase.io/swagger-ui/
 type Buyer struct {
 	Active            bool    `json:"active"`
 	Contact           Contact `json:"contact"`
@@ -59,17 +72,21 @@ type Buyer struct {
 	URL               string  `json:"url"`
 }
 
+// A Category represents a product category model from the itembase API.
 type Category struct {
 	CategoryID string `json:"category_id"`
 	Language   string `json:"language"`
 	Value      string `json:"value"`
 }
 
+// A ProductDescription represents a product description model from the itembase
+// API, which may be in a specified language.
 type ProductDescription struct {
 	Language string `json:"language"`
 	Value    string `json:"value"`
 }
 
+// A Brand represents a product brand model from the itembase API.
 type Brand struct {
 	Name struct {
 		Language string `json:"language"`
@@ -77,6 +94,9 @@ type Brand struct {
 	} `json:"name"`
 }
 
+// A Product represents a product entity from the itembase API.
+//
+// See http://sandbox.api.itembase.io/swagger-ui/
 type Product struct {
 	Active     bool       `json:"active"`
 	Brand      Brand      `json:"brand"`
@@ -117,10 +137,15 @@ type Product struct {
 	Variants  []interface{} `json:"variants"`
 }
 
+// Billing represents a model from the itembase API containing the billing
+// address of a Transaction.
 type Billing struct {
 	Address Address `json:"address"`
 }
 
+// A Transaction represents a transaction entity from the itembase API.
+//
+// See http://sandbox.api.itembase.io/swagger-ui/
 type Transaction struct {
 	Billing           Billing   `json:"billing"`
 	Buyer             Buyer     `json:"buyer"`
@@ -144,30 +169,36 @@ type Transaction struct {
 	UpdatedAt     string  `json:"updated_at"`
 }
 
+// Transactions is a container for pagination of Transaction entities.
 type Transactions struct {
 	Transactions         []Transaction `json:"documents"`
 	NumDocumentsFound    float64       `json:"num_documents_found"`
 	NumDocumentsReturned float64       `json:"num_documents_returned"`
 }
 
+// Profiles is a container for pagination of Profile entities.
 type Profiles struct {
 	Profiles             []Profile `json:"documents"`
 	NumDocumentsFound    float64   `json:"num_documents_found"`
 	NumDocumentsReturned float64   `json:"num_documents_returned"`
 }
 
+// Products is a container for pagination of Product entities.
 type Products struct {
 	Products             []Product `json:"documents"`
 	NumDocumentsFound    float64   `json:"num_documents_found"`
 	NumDocumentsReturned float64   `json:"num_documents_returned"`
 }
 
+// Buyers is a container for pagination of Buyer entities.
 type Buyers struct {
 	Buyers               []Buyer `json:"documents"`
 	NumDocumentsFound    float64 `json:"num_documents_found"`
 	NumDocumentsReturned float64 `json:"num_documents_returned"`
 }
 
+// A User represents a user entity from the itembase API, such as returned from
+// the "me" endpoint.
 type User struct {
 	UUID              string `json:"uuid"`
 	Username          string `json:"username"`

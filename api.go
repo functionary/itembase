@@ -13,7 +13,7 @@ import (
 // httpClient is the HTTP client used to make calls to Itembase with the default API
 var httpClient = newTimeoutClient(connectTimeout, readWriteTimeout)
 
-// f is the internal implementation of the Itembase API client.
+// itembaseAPI is the internal implementation of the Itembase API client.
 type itembaseAPI struct{}
 
 var (
@@ -71,7 +71,7 @@ func (f *itembaseAPI) Call(method, path, auth string, body interface{}, params m
 
 	decoder := json.NewDecoder(response.Body)
 	if response.StatusCode >= 400 {
-		err := &ItembaseError{Code: response.StatusCode, Message: response.Status}
+		err := &Error{Code: response.StatusCode, Message: response.Status}
 		decoder.Decode(err)
 		return err
 	}
