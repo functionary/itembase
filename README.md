@@ -21,7 +21,7 @@ Installation
   to do this, read [How to Write Go Code](https://golang.org/doc/code.html).
 - Download the package:
 ```sh
-go get github.com/saasbuilders/itembase
+go get gopkg.in/saasbuilders/itembase.v0
 ```
 
 Usage
@@ -32,7 +32,7 @@ High-level examples are shown here, see [the GoDoc][godoc] for the complete API.
 ### Config
 
 ```go
-import "github.com/saasbuilders/itembase"
+import "gopkg.in/saasbuilders/itembase.v0"
 
 config := itembase.Config{
 	ClientID:     "YOUR CLIENT ID",
@@ -210,4 +210,4 @@ the [Firebase API client].
 [Firebase API client]: https://github.com/ereyes01/firebase
 
 [godoc-badge]: http://img.shields.io/badge/godoc-reference-blue.svg?style=flat
-[godoc]: https://godoc.org/github.com/saasbuilders/itembase
+[godoc]: https://godoc.org/gopkg.in/saasbuilders/itembase.v0
