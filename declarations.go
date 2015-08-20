@@ -2,15 +2,35 @@ package itembase
 
 import "golang.org/x/oauth2"
 
+// A Config structure is used to configure an itembase Client instance.
 type Config struct {
-	ClientID     string
+	// ClientID is the OAuth2 application ID for a registered itembase app.
+	// See oauth2.Config.
+	ClientID string
+
+	// ClientSecret is the application's OAuth2 secret credential.
+	// See oauth2.Config.
 	ClientSecret string
-	Scopes       []string
+
+	// Scopes specify requested OAuth2 permissions, as defined by the itembase
+	// API. See oauth2.Config.
+	Scopes []string
+
+	// A TokenHandler provides handlers for lifecycle events of OAuth2 tokens.
 	TokenHandler ItembaseTokens
-	Production   bool
-	RedirectURL  string
+
+	// Production may be set to false to put a Client into sandbox mode.
+	Production bool
+
+	// RedirectURL is the URL to redirect users after requesting OAuth2
+	// permission grants from itembase. See oauth2.Config.
+	RedirectURL string
 }
 
+// A Client retrieves data from the itembase API. Use itembase.New to create an
+// instance of the default implementation.
+//
+// TODO: document each method
 type Client interface {
 	// Returns the absolute URL path for the client
 	URL() string
@@ -72,12 +92,23 @@ type API interface {
 	Call(method, path, auth string, body interface{}, params map[string]string, dest interface{}) error
 }
 
+// ItembaseTokens is a container struct holding handler functions for events in
+// an OAuth2 token's lifecycle.
 type ItembaseTokens struct {
 	TokenLoader      TokenLoader
 	TokenSaver       TokenSaver
 	TokenPermissions TokenPermissions
 }
 
+// A TokenSaver is called at points during OAuth2 authorization flow when an
+// application might wish to persist the given token to a data store or cache.
 type TokenSaver func(userID string, token *oauth2.Token) (err error)
+
+// A TokenLoader is called at points during OAuth2 authorization flow when an
+// application might wish to retrieve a persisted token from a data store.
 type TokenLoader func(userID string) (token *oauth2.Token, err error)
+
+// A TokenPermissions handler is called at points during OAuth2 authorization
+// flow when a grantor might have granted new permissions for an authorization,
+// such as new scopes.
 type TokenPermissions func(authURL string) (authcode string, err error)

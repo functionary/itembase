@@ -43,6 +43,13 @@ type client struct {
 	options Config
 }
 
+// New creates a new instance of the default itembase Client implementation.
+//
+// The options must be non-nil and must provide all OAuth2 credentials and
+// configuration for an application registered with the itembase API.
+//
+// TODO: always use the default API impl, NewClient allows dependency injection
+// needed for testing.
 func New(options Config, api API) Client {
 	if api == nil {
 		api = new(itembaseAPI)
@@ -51,6 +58,8 @@ func New(options Config, api API) Client {
 	return &client{options: options, production: options.Production, api: api}
 }
 
+// NewClient is an alternative Client constructor intended for testing or
+// advanced usage, where a custom API implementation can be injected.
 func NewClient(root, auth string, api API) Client {
 	if api == nil {
 		api = new(itembaseAPI)
