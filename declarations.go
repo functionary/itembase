@@ -13,9 +13,9 @@ type Config struct {
 
 type Client interface {
 	// Returns the absolute URL path for the client
-	Url() string
+	URL() string
 
-	//Gets the value referenced by the client and unmarshals it into
+	// Gets the value referenced by the client and unmarshals it into
 	// the passed in destination.
 	GetInto(destination interface{}) error
 	Get() (destination interface{}, err error)
@@ -44,19 +44,19 @@ type Client interface {
 	Limit(limit uint) Client
 	Offset(offset uint) Client
 
-	SaveToken(userId string, token *oauth2.Token) (err error)
-	GetCachedToken(userId string) (token *oauth2.Token, err error)
-	GiveTokenPermissions(authUrl string) (authcode string, err error)
+	SaveToken(userID string, token *oauth2.Token) (err error)
+	GetCachedToken(userID string) (token *oauth2.Token, err error)
+	GiveTokenPermissions(authURL string) (authcode string, err error)
 }
 
-// Api is the internal interface for interacting with Itembase. The internal
+// API is the internal interface for interacting with Itembase. The internal
 // implementation of this interface is responsible for all HTTP operations that
 // communicate with Itembase.
 //
-// Users of this library can implement their own Api-conformant types for
-// testing purposes. To use your own test Api type, pass it in to the NewClient
+// Users of this library can implement their own API-conformant types for
+// testing purposes. To use your own test API type, pass it in to the NewClient
 // function.
-type Api interface {
+type API interface {
 	// Call is responsible for performing HTTP transactions such as GET, POST,
 	// PUT, PATCH, and DELETE. It is used to communicate with Itembase by all
 	// of the Client methods.
@@ -64,10 +64,11 @@ type Api interface {
 	// Arguments are as follows:
 	//  - `method`: The http method for this call
 	//  - `path`: The full itembase url to call
+	//	- `auth`: TODO
 	//  - `body`: Data to be marshalled to JSON (it's the responsibility of Call to do the marshalling and unmarshalling)
 	//  - `params`: Additional parameters to be passed to itembase
 	//  - `dest`: The object to save the unmarshalled response body to.
-	//    It's up to this method to unmarshal correctly, the default implemenation just uses `json.Unmarshal`
+	//    It's up to this method to unmarshal correctly, the default implementation just uses `json.Unmarshal`
 	Call(method, path, auth string, body interface{}, params map[string]string, dest interface{}) error
 }
 
@@ -77,6 +78,6 @@ type ItembaseTokens struct {
 	TokenPermissions TokenPermissions
 }
 
-type TokenSaver func(userId string, token *oauth2.Token) (err error)
-type TokenLoader func(userId string) (token *oauth2.Token, err error)
-type TokenPermissions func(authUrl string) (authcode string, err error)
+type TokenSaver func(userID string, token *oauth2.Token) (err error)
+type TokenLoader func(userID string) (token *oauth2.Token, err error)
+type TokenPermissions func(authURL string) (authcode string, err error)

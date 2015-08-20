@@ -1,24 +1,33 @@
 Go Itembase
 ===========
 
-Helper library for invoking the Itembase REST API. Supports the following operations:
-- Read values from an Itembase path
-- Types and methods for the different [Itembase API endpoints](http://sandbox.api.itembase.io/swagger-ui/index.html)
+[![GoDoc][godoc-badge]][godoc]
 
-Based on the great work of [cosn](https://github.com/cosn), [JustinTulloss](https://github.com/JustinTulloss) and [ereyes01](https://github.com/ereyes01) on the Firebase REST API.
+A Go (golang) REST client library for [the Itembase API]. Supports all entities
+from the [Itembase API endpoints]:
 
-### Usage
+  - Buyers
+  - Products
+  - Store Profiles
+  - Transactions
 
-[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/saasbuilders/itembase)
+[the Itembase API]: http://business.itembase.com/connect
+[Itembase API endpoints]: http://sandbox.api.itembase.io/swagger-ui/index.html
 
-### Installation
+Installation
+------------
 
-- Setup your GOPATH and workspace. If you are new to Go and you're not sure how
-to do this, read [How to Write Go Code](https://golang.org/doc/code.html).
-- Dowload the package:
+- Setup your `GOPATH` and workspace. If you are new to Go and you're not sure how
+  to do this, read [How to Write Go Code](https://golang.org/doc/code.html).
+- Download the package:
 ```sh
 go get github.com/saasbuilders/itembase
 ```
+
+Usage
+-----
+
+High-level examples are shown here, see [the GoDoc][godoc] for the complete API.
 
 ### Config
 
@@ -65,7 +74,7 @@ pretty.Println(transactions)
 ### Querying Buyers
 
 ```go
-pretty.Println(storeRef.Buyers().Select("95d5c9ceeaad98706ce").Url())
+pretty.Println(storeRef.Buyers().Select("95d5c9ceeaad98706ce").URL())
 
 var buyers itembase.Buyers
 err := storeRef.Buyers().GetInto(&buyers)
@@ -79,7 +88,7 @@ pretty.Println(buyers)
 ### Querying the Store Profile
 
 ```go
-pretty.Println(storeRef.Profiles().Url())
+pretty.Println(storeRef.Profiles().URL())
 
 var profiles itembase.Profiles
 err := storeRef.Products().GetInto(&profiles)
@@ -93,8 +102,8 @@ pretty.Println(profiles)
 ### Querying Store Products
 
 ```go
-pretty.Println(storeRef.Products().Url())
-pretty.Println(storeRef.Products().Select("ee6f8dc930f5bcb671a0").Url())
+pretty.Println(storeRef.Products().URL())
+pretty.Println(storeRef.Products().Select("ee6f8dc930f5bcb671a0").URL())
 
 var products itembase.Products
 err := storeRef.Products().GetInto(&products)
@@ -109,9 +118,9 @@ pretty.Println(products)
 ### Querying Store Transactions
 
 ```go
-pretty.Println(storeRef.Transactions().Url())
-pretty.Println(storeRef.Transactions().Select("6ee2e2d9f7baea5132ab79b").Url())
-pretty.Println(storeRef.Transactions().CreatedAtFrom("2015-04-29T08:53:01.738+0200").Limit(2).Offset(6).Url())
+pretty.Println(storeRef.Transactions().URL())
+pretty.Println(storeRef.Transactions().Select("6ee2e2d9f7baea5132ab79b").URL())
+pretty.Println(storeRef.Transactions().CreatedAtFrom("2015-04-29T08:53:01.738+0200").Limit(2).Offset(6).URL())
 
 var transactions itembase.Transactions
 err := storeRef.Transactions().CreatedAtFrom("2015-05-07T09:53:01").Limit(3).Offset(6).GetInto(&transactions)
@@ -152,16 +161,14 @@ You will want to add your own token handlers to save tokens in your own datastor
 
 ```go
 func TokenHandler() itembase.ItembaseTokens {
-
 	return itembase.ItembaseTokens{
 		GetCachedToken, // How to retrieve a valid oauth token for a user
 		SaveToken,      // How to save a valid oauth token for a user
 		nil,            // What to do in case of expired tokens
 	}
-
 }
 
-func GetCachedToken(userId string) (token *oauth2.Token, err error) {
+func GetCachedToken(userID string) (token *oauth2.Token, err error) {
 
 	// retrieve oauth2.Token from your Database and assign it to &token
 
@@ -172,22 +179,35 @@ func GetCachedToken(userId string) (token *oauth2.Token, err error) {
 	return
 }
 
-func SaveToken(userId string, token *oauth2.Token) (err error) {
+func SaveToken(userID string, token *oauth2.Token) (err error) {
 
-	// save oauth2.Token to your Database for userId
+	// save oauth2.Token to your Database for userID
 
 	return
 }
 
-func TokenPermissions(authUrl string) (authcode string, err error) {
+func TokenPermissions(authURL string) (authcode string, err error) {
 	
-	// token expired, offline authurl provided
+	// token expired, offline authURL provided
 	// handle the token permission process, and return the new authcode
 
 	return
-
 }
 
 ```
 
 Off you go, now enjoy.
+
+Credits
+-------
+
+Originally based on the great work of [cosn], [JustinTulloss] and [ereyes01] on
+the [Firebase API client].
+
+[cosn]: https://github.com/cosn
+[JustinTulloss]: https://github.com/JustinTulloss
+[ereyes01]: https://github.com/ereyes01
+[Firebase API client]: https://github.com/ereyes01/firebase
+
+[godoc-badge]: http://img.shields.io/badge/godoc-reference-blue.svg?style=flat
+[godoc]: https://godoc.org/github.com/saasbuilders/itembase

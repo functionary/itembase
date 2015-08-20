@@ -5,18 +5,16 @@ import (
 	"encoding/json"
 )
 
-// ItembaseError is a Go representation of the error message sent back by itembase when a
+// Error is a Go representation of the error message sent back by itembase when a
 // request results in an error.
-type ItembaseError struct {
+type Error struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
 }
 
-func (f *ItembaseError) Error() string {
+func (f *Error) Error() string {
 	return f.Message
 }
-
-// type ItembaseToken interface
 
 // This is the default implementation
 type client struct {
@@ -39,13 +37,13 @@ type client struct {
 	production bool
 
 	// api is the underlying client used to make calls.
-	api Api
+	api API
 
 	params  map[string]string
 	options Config
 }
 
-func New(options Config, api Api) Client {
+func New(options Config, api API) Client {
 	if api == nil {
 		api = new(itembaseAPI)
 	}
@@ -53,7 +51,7 @@ func New(options Config, api Api) Client {
 	return &client{options: options, production: options.Production, api: api}
 }
 
-func NewClient(root, auth string, api Api) Client {
+func NewClient(root, auth string, api API) Client {
 	if api == nil {
 		api = new(itembaseAPI)
 	}
@@ -61,7 +59,7 @@ func NewClient(root, auth string, api Api) Client {
 	return &client{url: root, root: root, auth: auth, api: api}
 }
 
-func (c *client) Url() string {
+func (c *client) URL() string {
 	return c.url
 }
 
