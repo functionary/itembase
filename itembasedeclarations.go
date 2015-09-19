@@ -1,5 +1,10 @@
 package itembase
 
+import (
+	"encoding/json"
+	"log"
+)
+
 // TODO: Some entities/models don't have the full set of fields from the API.
 // Some of the implementation detail structs (Contacts, Billing, pagination
 // containers, etc.) could perhaps be unexported.
@@ -209,4 +214,16 @@ type User struct {
 	Locale            string `json:"locale"`
 	Email             string `json:"email"`
 	PreferredCurrency string `json:"preferred_currency"`
+}
+
+func convertTo(inputInterface, outputType interface{}) {
+	jsonBLOB, err := json.Marshal(inputInterface)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(jsonBLOB, &outputType)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
