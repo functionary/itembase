@@ -108,30 +108,22 @@ func (c *client) Child(path string) Client {
 }
 
 func (c *client) Transactions() Client {
-	c.url = c.root + "/users/" + c.user
-	c.url = c.url + "/transactions"
-
+	c.url = c.root + "/users/" + c.user + "/transactions"
 	return c
 }
 
 func (c *client) Products() Client {
-	c.url = c.root + "/users/" + c.user
-	c.url = c.url + "/products"
-
+	c.url = c.root + "/users/" + c.user + "/products"
 	return c
 }
 
 func (c *client) Buyers() Client {
-	c.url = c.root + "/users/" + c.user
-	c.url = c.url + "/buyers"
-
+	c.url = c.root + "/users/" + c.user + "/buyers"
 	return c
 }
 
 func (c *client) Profiles() Client {
-	c.url = c.root + "/users/" + c.user
-	c.url = c.url + "/profiles"
-
+	c.url = c.root + "/users/" + c.user + "/profiles"
 	return c
 }
 
