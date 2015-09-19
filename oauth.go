@@ -64,6 +64,7 @@ func (c *client) GiveTokenPermissions(authURL string) (authcode string, err erro
 			log.Fatal(err)
 		}
 	} else {
+		fmt.Println("Please go to the following URL : ", authURL)
 		if _, err := fmt.Scan(&authcode); err != nil {
 			log.Fatal(err)
 		}
