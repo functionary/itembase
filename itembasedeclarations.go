@@ -174,6 +174,14 @@ type Transaction struct {
 	UpdatedAt     string  `json:"updated_at"`
 }
 
+// ItembaseResponse is a container for any Itembase response.
+// It returns the resultset, Number of found documents and Number of documents returned
+type ItembaseResponse struct {
+	Documents            []interface{} `json:"documents"`
+	NumDocumentsFound    int           `json:"num_documents_found"`
+	NumDocumentsReturned int           `json:"num_documents_returned"`
+}
+
 // Transactions is a container for pagination of Transaction entities.
 type Transactions struct {
 	Transactions         []Transaction `json:"documents"`
