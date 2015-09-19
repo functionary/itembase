@@ -38,6 +38,14 @@ type Client interface {
 	// Gets the value referenced by the client and unmarshals it into
 	// the passed in destination.
 	GetInto(destination interface{}) error
+
+	// Paginates through all possible values from client, and unmarshals
+	// into the passed in destination
+	GetAllInto(destination interface {
+		Add(interface{})
+	}) error
+
+	// Gets values referenced by the client, and returns them as generic interface(!)
 	Get() (destination interface{}, err error)
 
 	Me() (destination User, err error)
