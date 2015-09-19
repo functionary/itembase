@@ -98,6 +98,50 @@ func (c *client) Get() (destination interface{}, err error) {
 	return
 }
 
+func (c *client) GetAllInto(destination interface {
+	Add(interface{})
+}) (err error) {
+
+	var response ItembaseResponse
+	DocumentsReceived := 0
+
+	err = c.api.Call("GET", c.url, c.auth, nil, c.params, &response)
+	if err != nil {
+		return
+	}
+
+	for _, document := range response.Documents {
+		if destination.Add != nil {
+			destination.Add(document)
+		}
+	}
+
+	if response.NumDocumentsFound == response.NumDocumentsReturned {
+		return
+	} else {
+		DocumentsReceived = response.NumDocumentsReturned
+
+		for DocumentsReceived < response.NumDocumentsFound {
+
+			c = c.clientWithNewParam("start_at_document", DocumentsReceived)
+			err = c.api.Call("GET", c.url, c.auth, nil, c.params, &response)
+
+			if len(response.Documents) == 0 {
+				return
+			}
+
+			DocumentsReceived = DocumentsReceived + response.NumDocumentsReturned
+			for _, document := range response.Documents {
+				if destination.Add != nil {
+					destination.Add(document)
+				}
+			}
+		}
+	}
+
+	return
+}
+
 func (c *client) Me() (destination User, err error) {
 	err = c.api.Call("GET", c.me, c.auth, nil, c.params, &destination)
 	return
