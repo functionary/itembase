@@ -17,10 +17,12 @@ func (c *client) newConf() *oauth2.Config {
 		endpointURL = "https://accounts.itembase.com/oauth/v2"
 		c.me = "https://users.itembase.com/v1/me"
 		c.root = "https://api.itembase.io/v1"
+		c.activation = "https://solutionservice.itembase.com"
 	} else {
 		endpointURL = "http://sandbox.accounts.itembase.io/oauth/v2"
 		c.me = "http://sandbox.users.itembase.io/v1/me"
 		c.root = "http://sandbox.api.itembase.io/v1"
+		c.activation = "http://sandbox.solutionservice.itembase.io"
 	}
 
 	return &oauth2.Config{

@@ -19,8 +19,9 @@ func (f *Error) Error() string {
 // This is the default implementation
 type client struct {
 	// root is the client's base URL used for all calls.
-	root string
-	me   string
+	root       string
+	me         string
+	activation string
 
 	// url is the current url to call
 	url string
@@ -99,6 +100,11 @@ func (c *client) Get() (destination interface{}, err error) {
 
 func (c *client) Me() (destination User, err error) {
 	err = c.api.Call("GET", c.me, c.auth, nil, c.params, &destination)
+	return
+}
+
+func (c *client) Activate() (destination interface{}, err error) {
+	err = c.api.Call("GET", c.activation+"/activate", c.auth, nil, c.params, &destination)
 	return
 }
 

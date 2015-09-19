@@ -41,6 +41,7 @@ type Client interface {
 	Get() (destination interface{}, err error)
 
 	Me() (destination User, err error)
+	Activate() (destination interface{}, err error)
 
 	// Child returns a reference to the child specified by `path`. This does not
 	// actually make a request to itembase, but you can then manipulate the reference
