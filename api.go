@@ -17,8 +17,8 @@ var httpClient = newTimeoutClient(connectTimeout, readWriteTimeout)
 type itembaseAPI struct{}
 
 var (
-	connectTimeout   = time.Duration(30 * time.Second) // timeout for http connection
-	readWriteTimeout = time.Duration(30 * time.Second) // timeout for http read/write
+	connectTimeout   = time.Duration(120 * time.Second) // timeout for http connection
+	readWriteTimeout = time.Duration(120 * time.Second) // timeout for http read/write
 )
 
 func doItembaseRequest(client *http.Client, method, path, auth, accept string, body interface{}, params map[string]string) (*http.Response, error) {
@@ -93,8 +93,9 @@ func newTimeoutClient(connectTimeout time.Duration, readWriteTimeout time.Durati
 		Transport: &httpcontrol.Transport{
 			RequestTimeout:      readWriteTimeout,
 			DialTimeout:         connectTimeout,
-			MaxTries:            30,
+			MaxTries:            60,
 			MaxIdleConnsPerHost: 5,
+			RetryAfterTimeout:   true,
 		},
 	}
 }
