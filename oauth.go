@@ -4,10 +4,11 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"golang.org/x/net/context"
-	"golang.org/x/oauth2"
 	"log"
 	"net/http"
+
+	"golang.org/x/net/context"
+	"golang.org/x/oauth2"
 )
 
 func (c *client) newConf() *oauth2.Config {
@@ -132,7 +133,18 @@ func (c *client) getUserToken(userID string) (Token *oauth2.Token) {
 		log.Fatal("Exchange error: %v", err)
 	}
 
-	c.SaveToken(userID, Token)
+	Token, err = client.Transport.(*oauth2.Transport).Source.Token()
+
+	if err != nil {
+		if Token, err = c.newUserToken(oauth2.NoContext, config, userID); err != nil {
+			return
+		}
+		if err != nil {
+			log.Fatal("Exchange error:", err)
+		}
+	} else {
+		c.SaveToken(userID, Token)
+	}
 
 	return
 }
