@@ -1,5 +1,10 @@
 package itembase
 
+import (
+	"encoding/json"
+	"log"
+)
+
 // TODO: Some entities/models don't have the full set of fields from the API.
 // Some of the implementation detail structs (Contacts, Billing, pagination
 // containers, etc.) could perhaps be unexported.
@@ -169,32 +174,64 @@ type Transaction struct {
 	UpdatedAt     string  `json:"updated_at"`
 }
 
+// ItembaseResponse is a container for any Itembase response.
+// It returns the resultset, Number of found documents and Number of documents returned
+type ItembaseResponse struct {
+	Documents            []interface{} `json:"documents"`
+	NumDocumentsFound    int           `json:"num_documents_found"`
+	NumDocumentsReturned int           `json:"num_documents_returned"`
+}
+
 // Transactions is a container for pagination of Transaction entities.
 type Transactions struct {
-	Transactions         []Transaction `json:"documents"`
-	NumDocumentsFound    float64       `json:"num_documents_found"`
-	NumDocumentsReturned float64       `json:"num_documents_returned"`
+	Transactions []Transaction `json:"documents"`
+}
+
+func (t *Transactions) Add(transaction interface{}) {
+
+	var newTransaction Transaction
+	convertTo(transaction, &newTransaction)
+	t.Transactions = append(t.Transactions, newTransaction)
+
 }
 
 // Profiles is a container for pagination of Profile entities.
 type Profiles struct {
-	Profiles             []Profile `json:"documents"`
-	NumDocumentsFound    float64   `json:"num_documents_found"`
-	NumDocumentsReturned float64   `json:"num_documents_returned"`
+	Profiles []Profile `json:"documents"`
+}
+
+func (p *Profiles) Add(profile interface{}) {
+
+	var newProfile Profile
+	convertTo(profile, &newProfile)
+	p.Profiles = append(p.Profiles, newProfile)
+
 }
 
 // Products is a container for pagination of Product entities.
 type Products struct {
-	Products             []Product `json:"documents"`
-	NumDocumentsFound    float64   `json:"num_documents_found"`
-	NumDocumentsReturned float64   `json:"num_documents_returned"`
+	Products []Product `json:"documents"`
+}
+
+func (p *Products) Add(product interface{}) {
+
+	var newProduct Product
+	convertTo(product, &newProduct)
+	p.Products = append(p.Products, newProduct)
+
 }
 
 // Buyers is a container for pagination of Buyer entities.
 type Buyers struct {
-	Buyers               []Buyer `json:"documents"`
-	NumDocumentsFound    float64 `json:"num_documents_found"`
-	NumDocumentsReturned float64 `json:"num_documents_returned"`
+	Buyers []Buyer `json:"documents"`
+}
+
+func (b *Buyers) Add(buyer interface{}) {
+
+	var newBuyer Buyer
+	convertTo(buyer, &newBuyer)
+	b.Buyers = append(b.Buyers, newBuyer)
+
 }
 
 // A User represents a user entity from the itembase API, such as returned from
@@ -209,4 +246,16 @@ type User struct {
 	Locale            string `json:"locale"`
 	Email             string `json:"email"`
 	PreferredCurrency string `json:"preferred_currency"`
+}
+
+func convertTo(inputInterface, outputType interface{}) {
+	jsonBLOB, err := json.Marshal(inputInterface)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(jsonBLOB, &outputType)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
