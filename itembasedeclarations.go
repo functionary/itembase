@@ -140,6 +140,13 @@ type Product struct {
 	Variants  []interface{} `json:"variants"`
 }
 
+func (p *Product) InStock() bool {
+	if p.StockInformation.InStock {
+		return true
+	}
+	return false
+}
+
 // Billing represents a model from the itembase API containing the billing
 // address of a Transaction.
 type Billing struct {
@@ -217,6 +224,16 @@ func (p *Products) Add(product interface{}) {
 	convertTo(product, &newProduct)
 	p.Products = append(p.Products, newProduct)
 
+}
+
+func (p *Products) InStock() (products []Product) {
+	for _, product := range p.Products {
+		if product.InStock() {
+			products = append(products, product)
+		}
+	}
+
+	return
 }
 
 // Buyers is a container for pagination of Buyer entities.
