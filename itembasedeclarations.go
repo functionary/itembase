@@ -103,14 +103,12 @@ type Brand struct {
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Product struct {
-	Active     bool       `json:"active"`
-	Brand      Brand      `json:"brand"`
-	Categories []Category `json:"categories"`
-	Condition  string     `json:"condition"`
-	CreatedAt  string     `json:"created_at"`
-	Currency   struct {
-		Currency string `json:"currency"`
-	} `json:"currency"`
+	Active      bool                 `json:"active"`
+	Brand       Brand                `json:"brand"`
+	Categories  []Category           `json:"categories"`
+	Condition   string               `json:"condition"`
+	CreatedAt   string               `json:"created_at"`
+	Currency    string               `json:"currency"`
 	Description []ProductDescription `json:"description"`
 	ID          string               `json:"id"`
 	Identifier  struct {
