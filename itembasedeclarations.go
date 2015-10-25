@@ -141,10 +141,7 @@ type Product struct {
 }
 
 func (p *Product) InStock() bool {
-	if p.StockInformation.InStock {
-		return true
-	}
-	return false
+	return p.StockInformation.InStock
 }
 
 // Billing represents a model from the itembase API containing the billing
