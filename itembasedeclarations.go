@@ -179,6 +179,13 @@ type Transaction struct {
 	UpdatedAt     string  `json:"updated_at"`
 }
 
+func (t *Transaction) Completed() bool {
+	if t.Status.Global == "completed" {
+		return true
+	}
+	return false
+}
+
 // ItembaseResponse is a container for any Itembase response.
 // It returns the resultset, Number of found documents and Number of documents returned
 type ItembaseResponse struct {
@@ -198,6 +205,16 @@ func (t *Transactions) Add(transaction interface{}) {
 	convertTo(transaction, &newTransaction)
 	t.Transactions = append(t.Transactions, newTransaction)
 
+}
+
+func (t *Transactions) Completed() (transactions []Transaction) {
+	for _, transaction := range t.Transactions {
+		if transaction.Completed() {
+			transactions = append(transactions, transaction)
+		}
+	}
+
+	return
 }
 
 // Profiles is a container for pagination of Profile entities.
