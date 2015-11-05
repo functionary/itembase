@@ -96,6 +96,16 @@ func (c *client) UserOAuthClient(ctx context.Context, config *oauth2.Config, use
 	return config.Client(ctx, userToken), err
 }
 
+// TokenOAuthClient returns an oauth2 client for a specific token
+func (c *client) TokenOAuthClient(ctx context.Context, config *oauth2.Config, userToken *oauth2.Token) (client *http.Client, err error) {
+
+	if !userToken.Valid() { // if user token is expired
+		userToken = &oauth2.Token{RefreshToken: userToken.RefreshToken}
+	}
+
+	return config.Client(ctx, userToken), err
+}
+
 func (c *client) newUserToken(ctx context.Context, config *oauth2.Config, userID string) (*oauth2.Token, error) {
 	stateBytes := make([]byte, 32)
 	_, err := rand.Read(stateBytes)
