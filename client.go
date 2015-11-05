@@ -61,12 +61,15 @@ func New(options Config, api API) Client {
 
 // NewClient is an alternative Client constructor intended for testing or
 // advanced usage, where a custom API implementation can be injected.
-func NewClient(root, auth string, api API) Client {
+func NewClient(root, auth string, options Config, api API) Client {
 	if api == nil {
 		api = new(itembaseAPI)
 	}
 
-	return &client{url: root, root: root, auth: auth, api: api}
+	newClient := &client{url: root, root: root, auth: auth, api: api, options: options, production: options.Production}
+	newClient.newConf()
+
+	return newClient
 }
 
 func (c *client) URL() string {
