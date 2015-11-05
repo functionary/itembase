@@ -81,6 +81,7 @@ func (c *client) Sandbox() Client {
 func (c *client) User(user string) Client {
 	c.auth = c.getUserToken(user).AccessToken
 	c.user = user
+	c.params = make(map[string]string)
 	c.url = c.root + "/users/" + user
 	return c
 }
