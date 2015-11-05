@@ -128,7 +128,7 @@ func (c *client) newUserToken(ctx context.Context, config *oauth2.Config, userID
 	return token, nil
 }
 
-func (c *client) getUserToken(userID string) (Token *oauth2.Token) {
+func (c *client) getUserToken(userID string) (token *oauth2.Token) {
 	config := c.newConf()
 	client, err := c.UserOAuthClient(oauth2.NoContext, config, userID)
 
@@ -137,23 +137,23 @@ func (c *client) getUserToken(userID string) (Token *oauth2.Token) {
 		fmt.Errorf("Fetch should return an error if no refresh token is set")
 	}
 
-	Token, err = client.Transport.(*oauth2.Transport).Source.Token()
+	token, err = client.Transport.(*oauth2.Transport).Source.Token()
 
 	if err != nil {
 		log.Fatal("Exchange error: %v", err)
 	}
 
-	Token, err = client.Transport.(*oauth2.Transport).Source.Token()
+	token, err = client.Transport.(*oauth2.Transport).Source.Token()
 
 	if err != nil {
-		if Token, err = c.newUserToken(oauth2.NoContext, config, userID); err != nil {
+		if token, err = c.newUserToken(oauth2.NoContext, config, userID); err != nil {
 			return
 		}
 		if err != nil {
 			log.Fatal("Exchange error:", err)
 		}
 	} else {
-		c.SaveToken(userID, Token)
+		c.SaveToken(userID, token)
 	}
 
 	return
