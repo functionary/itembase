@@ -76,6 +76,9 @@ type Client interface {
 	SaveToken(userID string, token *oauth2.Token) (err error)
 	GetCachedToken(userID string) (token *oauth2.Token, err error)
 	GiveTokenPermissions(authURL string) (authcode string, err error)
+
+	HandleOAuthCode(authcode string) (*oauth2.Token, error)
+	GetUserIDForToken(token *oauth2.Token) (string, error)
 }
 
 // API is the internal interface for interacting with Itembase. The internal
