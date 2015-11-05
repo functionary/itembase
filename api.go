@@ -3,11 +3,12 @@ package itembase
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"github.com/facebookgo/httpcontrol"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/facebookgo/httpcontrol"
 )
 
 // httpClient is the HTTP client used to make calls to Itembase with the default API
@@ -38,7 +39,7 @@ func doItembaseRequest(client *http.Client, method, path, auth, accept string, b
 		return nil, err
 	}
 
-	fmt.Println(path)
+	log.Println(path)
 	req, err := http.NewRequest(method, path, bytes.NewReader(encodedBody))
 	if err != nil {
 		return nil, err
@@ -62,12 +63,18 @@ func doItembaseRequest(client *http.Client, method, path, auth, accept string, b
 func (f *itembaseAPI) Call(method, path, auth string, body interface{}, params map[string]string, dest interface{}) error {
 	response, err := doItembaseRequest(httpClient, method, path, auth, "", body, params)
 	if err != nil {
-		fmt.Println("error")
-		fmt.Println(err)
+		log.Println("Error when making Itembase Request", err)
 		return err
 	}
 
 	defer response.Body.Close()
+
+	//contents, _ := ioutil.ReadAll(response.Body)
+	// if err != nil {
+	// 	log.Printf("%s", err)
+	// 	os.Exit(1)
+	// }
+	//log.Printf("%s\n", string(contents))
 
 	decoder := json.NewDecoder(response.Body)
 	if response.StatusCode >= 400 {
@@ -79,8 +86,7 @@ func (f *itembaseAPI) Call(method, path, auth string, body interface{}, params m
 	if dest != nil && response.ContentLength != 0 {
 		err = decoder.Decode(dest)
 		if err != nil {
-			fmt.Println("error 3")
-			fmt.Println(err)
+			log.Println("Error when decoding body", err)
 			return err
 		}
 	}
