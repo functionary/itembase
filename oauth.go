@@ -117,13 +117,32 @@ func (c *client) newUserToken(ctx context.Context, config *oauth2.Config, userID
 	authURL := config.AuthCodeURL(state, oauth2.AccessTypeOffline)
 
 	authcode, err := c.GiveTokenPermissions(authURL)
+	if err != nil {
+		log.Fatalf("Error when getting token permissions: %v", err)
+		return nil, err
+	}
 
+	token, err := c.HandleOAuthCode(authcode)
+	if err != nil {
+		log.Fatalf("Error when handling OAuth Code error: %v", err)
+		return nil, err
+	}
+
+	c.SaveToken(userID, token) // save token to datastore
+
+	return token, nil
+}
+
+// HandleOAuthCode returns a valid token for an OAuth code
+func (c *client) HandleOAuthCode(authcode string) (*oauth2.Token, error) {
+
+	config := c.newConf()
 	token, err := config.Exchange(oauth2.NoContext, authcode)
+
 	if err != nil {
 		log.Fatalf("Exchange error: %v", err)
 		return nil, err
 	}
-	c.SaveToken(userID, token) // save token to datastore
 
 	return token, nil
 
