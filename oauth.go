@@ -126,6 +126,24 @@ func (c *client) newUserToken(ctx context.Context, config *oauth2.Config, userID
 	c.SaveToken(userID, token) // save token to datastore
 
 	return token, nil
+
+}
+
+// GetUserIDForToken looks up the corresponding itembase UserID based on
+// OAuth2 Token
+func (c *client) GetUserIDForToken(token *oauth2.Token) (string, error) {
+
+	log.Println("GetUserIDForToken", token)
+
+	tokenRef := NewClient(c.root, token.AccessToken, c.options, nil)
+
+	me, err := tokenRef.Me()
+	if err != nil {
+		log.Println("Could not run Me call:", me, err)
+		return "", err
+	}
+
+	return me.UUID, nil
 }
 
 func (c *client) getUserToken(userID string) (token *oauth2.Token) {
