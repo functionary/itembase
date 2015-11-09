@@ -196,18 +196,18 @@ type Transactions struct {
 	Transactions []Transaction `json:"documents"`
 }
 
-func (t *Transactions) Add(transaction interface{}) {
+func (transactions *Transactions) Add(transaction interface{}) {
 
 	var newTransaction Transaction
 	convertTo(transaction, &newTransaction)
-	t.Transactions = append(t.Transactions, newTransaction)
+	transactions.Transactions = append(transactions.Transactions, newTransaction)
 
 }
 
-func (t *Transactions) Completed() (transactions []Transaction) {
-	for _, transaction := range t.Transactions {
+func (transactions *Transactions) Completed() (filteredTransactions Transactions) {
+	for _, transaction := range transactions.Transactions {
 		if transaction.Completed() {
-			transactions = append(transactions, transaction)
+			filteredTransactions.Add(transaction)
 		}
 	}
 
@@ -219,11 +219,11 @@ type Profiles struct {
 	Profiles []Profile `json:"documents"`
 }
 
-func (p *Profiles) Add(profile interface{}) {
+func (profiles *Profiles) Add(profile interface{}) {
 
 	var newProfile Profile
 	convertTo(profile, &newProfile)
-	p.Profiles = append(p.Profiles, newProfile)
+	profiles.Profiles = append(profiles.Profiles, newProfile)
 
 }
 
@@ -232,21 +232,30 @@ type Products struct {
 	Products []Product `json:"documents"`
 }
 
-func (p *Products) Add(product interface{}) {
+func (products *Products) Add(product interface{}) {
 
 	var newProduct Product
 	convertTo(product, &newProduct)
-	p.Products = append(p.Products, newProduct)
+	products.Products = append(products.Products, newProduct)
 
 }
 
-func (p *Products) InStock() (products []Product) {
-	for _, product := range p.Products {
+func (products *Products) InStock() (filteredProducts Products) {
+	for _, product := range products.Products {
 		if product.InStock() {
-			products = append(products, product)
+			filteredProducts.Add(product)
 		}
 	}
+	return
+}
 
+// Get Products based on shopID
+func (products *Products) ByShop(shopID string) (filteredProducts Products) {
+	for _, product := range products.Products {
+		if product.SourceID == shopID {
+			filteredProducts.Add(product)
+		}
+	}
 	return
 }
 
@@ -255,12 +264,22 @@ type Buyers struct {
 	Buyers []Buyer `json:"documents"`
 }
 
-func (b *Buyers) Add(buyer interface{}) {
+func (buyers *Buyers) Add(buyer interface{}) {
 
 	var newBuyer Buyer
 	convertTo(buyer, &newBuyer)
-	b.Buyers = append(b.Buyers, newBuyer)
+	buyers.Buyers = append(buyers.Buyers, newBuyer)
 
+}
+
+func (buyers *Buyers) ByShop(shopID string) (filteredBuyers Buyers) {
+
+	for _, buyer := range buyers.Buyers {
+		if buyer.SourceID == shopID {
+			filteredBuyers.Add(buyer)
+		}
+	}
+	return
 }
 
 // A User represents a user entity from the itembase API, such as returned from
