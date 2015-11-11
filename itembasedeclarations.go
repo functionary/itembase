@@ -146,28 +146,28 @@ func (product *Product) InStock() bool {
 	return product.StockInformation.InStock
 }
 
-// Returns name for specified preferred language if present,
-// If not found falls back to return a random name
-func (product *Product) GetName(preferredLanguage string) string {
+// Returns name for specified preferred language if present
+func (product *Product) GetName(preferredLanguage string) (name string, ok bool) {
 
-	// if preferredLanguage specified, return value for that preferredLanguage
-	if preferredLanguage != "" {
-		for _, name := range product.Name {
-			if preferredLanguage == name.Language {
-				return cleanItembaseUnicode(name.Value)
-			}
+	for _, productName := range product.Name {
+		if preferredLanguage == productName.Language {
+			return cleanItembaseUnicode(productName.Value), true
 		}
 	}
 
-	// if no preferredLanguage specified, OR
-	// if no entry for preferredLanguage found
-	// return first found value
-	for _, name := range product.Name {
-		return cleanItembaseUnicode(name.Value)
+	// if []struct{} is empty, return empty string
+	return "", false
+}
+
+// Returns any name for Product
+func (product *Product) GetDefaultName() (name string, ok bool) {
+
+	for _, productName := range product.Name {
+		return cleanItembaseUnicode(productName.Value), true
 	}
 
-	// if []struct{} is empty, return empty string
-	return ""
+	return "", false
+
 }
 
 func cleanItembaseUnicode(str string) string {
