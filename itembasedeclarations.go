@@ -3,6 +3,7 @@ package itembase
 import (
 	"encoding/json"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -141,8 +142,30 @@ type Product struct {
 	Variants  []interface{} `json:"variants"`
 }
 
-func (p *Product) InStock() bool {
-	return p.StockInformation.InStock
+func (product *Product) InStock() bool {
+	return product.StockInformation.InStock
+}
+
+func (product *Product) GetName(language string) string {
+	if language != "" {
+		for _, name := range product.Name {
+			if language == name.Language {
+				return clean(name.Value)
+			}
+		}
+	}
+
+	for _, name := range product.Name {
+		return clean(name.Value)
+	}
+
+	return ""
+}
+
+func clean(str string) string {
+	str = strings.Replace(str, "\u00a0", " ", -1)
+	str = strings.Replace(str, "\ufeff", "", -1)
+	return str
 }
 
 // Billing represents a model from the itembase API containing the billing
