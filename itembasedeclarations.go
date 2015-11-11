@@ -3,6 +3,7 @@ package itembase
 import (
 	"encoding/json"
 	"log"
+	"time"
 )
 
 // TODO: Some entities/models don't have the full set of fields from the API.
@@ -18,20 +19,20 @@ type Profile struct {
 	Contact   struct {
 		Contact []Contact `json:"contact"`
 	} `json:"contact"`
-	CreatedAt         string `json:"created_at"`
-	Currency          string `json:"currency"`
-	DisplayName       string `json:"display_name"`
-	ID                string `json:"id"`
-	Language          string `json:"language"`
-	Locale            string `json:"locale"`
-	OriginalReference string `json:"original_reference"`
-	PlatformID        string `json:"platform_id"`
-	PlatformName      string `json:"platform_name"`
-	SourceID          string `json:"source_id"`
-	Status            string `json:"status"`
-	Type              string `json:"type"`
-	UpdatedAt         string `json:"updated_at"`
-	URL               string `json:"url"`
+	CreatedAt         time.Time `json:"created_at"`
+	Currency          string    `json:"currency"`
+	DisplayName       string    `json:"display_name"`
+	ID                string    `json:"id"`
+	Language          string    `json:"language"`
+	Locale            string    `json:"locale"`
+	OriginalReference string    `json:"original_reference"`
+	PlatformID        string    `json:"platform_id"`
+	PlatformName      string    `json:"platform_name"`
+	SourceID          string    `json:"source_id"`
+	Status            string    `json:"status"`
+	Type              string    `json:"type"`
+	UpdatedAt         time.Time `json:"updated_at"`
+	URL               string    `json:"url"`
 }
 
 // An Address represents a mailing address model from the itembase API.
@@ -57,24 +58,24 @@ type Contact struct {
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Buyer struct {
-	Active            bool    `json:"active"`
-	Contact           Contact `json:"contact"`
-	CreatedAt         string  `json:"created_at"`
-	Currency          string  `json:"currency"`
-	DateOfBirth       string  `json:"date_of_birth"`
-	FirstName         string  `json:"first_name"`
-	ID                string  `json:"id"`
-	Language          string  `json:"language"`
-	LastName          string  `json:"last_name"`
-	Locale            string  `json:"locale"`
-	Note              string  `json:"note"`
-	OptOut            bool    `json:"opt_out"`
-	OriginalReference string  `json:"original_reference"`
-	SourceID          string  `json:"source_id"`
-	Status            string  `json:"status"`
-	Type              string  `json:"type"`
-	UpdatedAt         string  `json:"updated_at"`
-	URL               string  `json:"url"`
+	Active            bool      `json:"active"`
+	Contact           Contact   `json:"contact"`
+	CreatedAt         time.Time `json:"created_at"`
+	Currency          string    `json:"currency"`
+	DateOfBirth       string    `json:"date_of_birth"`
+	FirstName         string    `json:"first_name"`
+	ID                string    `json:"id"`
+	Language          string    `json:"language"`
+	LastName          string    `json:"last_name"`
+	Locale            string    `json:"locale"`
+	Note              string    `json:"note"`
+	OptOut            bool      `json:"opt_out"`
+	OriginalReference string    `json:"original_reference"`
+	SourceID          string    `json:"source_id"`
+	Status            string    `json:"status"`
+	Type              string    `json:"type"`
+	UpdatedAt         time.Time `json:"updated_at"`
+	URL               string    `json:"url"`
 }
 
 // A Category represents a product category model from the itembase API.
@@ -107,7 +108,7 @@ type Product struct {
 	Brand       Brand                `json:"brand"`
 	Categories  []Category           `json:"categories"`
 	Condition   string               `json:"condition"`
-	CreatedAt   string               `json:"created_at"`
+	CreatedAt   time.Time            `json:"created_at"`
 	Currency    string               `json:"currency"`
 	Description []ProductDescription `json:"description"`
 	ID          string               `json:"id"`
@@ -135,7 +136,7 @@ type Product struct {
 	} `json:"stock_information"`
 	Tax       float64       `json:"tax"`
 	TaxRate   float64       `json:"tax_rate"`
-	UpdatedAt string        `json:"updated_at"`
+	UpdatedAt time.Time     `json:"updated_at"`
 	URL       string        `json:"url"`
 	Variants  []interface{} `json:"variants"`
 }
@@ -156,7 +157,7 @@ type Billing struct {
 type Transaction struct {
 	Billing           Billing   `json:"billing"`
 	Buyer             Buyer     `json:"buyer"`
-	CreatedAt         string    `json:"created_at"`
+	CreatedAt         time.Time `json:"created_at"`
 	Currency          string    `json:"currency"`
 	ID                string    `json:"id"`
 	OriginalReference string    `json:"original_reference"`
@@ -170,10 +171,10 @@ type Transaction struct {
 		Payment  string `json:"payment"`
 		Shipping string `json:"shipping"`
 	} `json:"status"`
-	TotalPrice    float64 `json:"total_price"`
-	TotalPriceNet float64 `json:"total_price_net"`
-	TotalTax      float64 `json:"total_tax"`
-	UpdatedAt     string  `json:"updated_at"`
+	TotalPrice    float64   `json:"total_price"`
+	TotalPriceNet float64   `json:"total_price_net"`
+	TotalTax      float64   `json:"total_tax"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 func (t *Transaction) Completed() bool {
