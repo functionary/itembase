@@ -147,6 +147,7 @@ func (product *Product) InStock() bool {
 }
 
 // Returns name for specified preferred language if present
+// preferredLanguage is expected as 2 letter string
 func (product *Product) GetName(preferredLanguage string) (name string, ok bool) {
 
 	for _, productName := range product.Name {
