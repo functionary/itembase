@@ -55,6 +55,22 @@ type Contact struct {
 	Phones []interface{} `json:"phones,omitempty"`
 }
 
+// GetEmail returns the Email for a Buyer Profile
+func (buyer *Buyer) GetEmail() (Email string) {
+	if len(buyer.Contact.Emails) > 0 {
+		for _, EmailValue := range buyer.Contact.Emails {
+			return EmailValue.Value
+		}
+	}
+
+	return ""
+}
+
+// GetEmail returns the Email for a Buyer Profile
+func (buyer *Buyer) GetName() string {
+	return buyer.FirstName + " " + buyer.LastName
+}
+
 // A Buyer represents a buyer entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
