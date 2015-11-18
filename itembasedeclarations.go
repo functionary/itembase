@@ -15,131 +15,131 @@ import (
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Profile struct {
-	Active    bool   `json:"active"`
-	AvatarURL string `json:"avatar_url"`
+	Active    bool   `json:"active,omitempty"`
+	AvatarURL string `json:"avatar_url,omitempty"`
 	Contact   struct {
-		Contact []Contact `json:"contact"`
-	} `json:"contact"`
-	CreatedAt         time.Time `json:"created_at"`
-	Currency          string    `json:"currency"`
-	DisplayName       string    `json:"display_name"`
-	ID                string    `json:"id"`
-	Language          string    `json:"language"`
-	Locale            string    `json:"locale"`
-	OriginalReference string    `json:"original_reference"`
-	PlatformID        string    `json:"platform_id"`
-	PlatformName      string    `json:"platform_name"`
-	SourceID          string    `json:"source_id"`
-	Status            string    `json:"status"`
-	Type              string    `json:"type"`
-	UpdatedAt         time.Time `json:"updated_at"`
-	URL               string    `json:"url"`
+		Contact []Contact `json:"contact,omitempty"`
+	} `json:"contact,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	Currency          string     `json:"currency,omitempty"`
+	DisplayName       string     `json:"display_name,omitempty"`
+	ID                string     `json:"id"`
+	Language          string     `json:"language,omitempty"`
+	Locale            string     `json:"locale,omitempty"`
+	OriginalReference string     `json:"original_reference,omitempty"`
+	PlatformID        string     `json:"platform_id,omitempty"`
+	PlatformName      string     `json:"platform_name,omitempty"`
+	SourceID          string     `json:"source_id,omitempty"`
+	Status            string     `json:"status,omitempty"`
+	Type              string     `json:"type,omitempty"`
+	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
+	URL               string     `json:"url,omitempty"`
 }
 
 // An Address represents a mailing address model from the itembase API.
 type Address struct {
-	City    string `json:"city"`
-	Country string `json:"country"`
-	Line1   string `json:"line_1"`
-	Name    string `json:"name"`
-	Zip     string `json:"zip"`
+	City    string `json:"city,omitempty"`
+	Country string `json:"country,omitempty"`
+	Line1   string `json:"line_1,omitempty"`
+	Name    string `json:"name,omitempty"`
+	Zip     string `json:"zip,omitempty"`
 }
 
 // A Contact represents a container of contact information from itembase API
 // models.
 type Contact struct {
-	Addresses []Address `json:"addresses"`
+	Addresses []Address `json:"addresses,omitempty"`
 	Emails    []struct {
-		Value string `json:"value"`
-	} `json:"emails"`
-	Phones []interface{} `json:"phones"`
+		Value string `json:"value,omitempty"`
+	} `json:"emails,omitempty"`
+	Phones []interface{} `json:"phones,omitempty"`
 }
 
 // A Buyer represents a buyer entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Buyer struct {
-	Active            bool      `json:"active"`
-	Contact           Contact   `json:"contact"`
-	CreatedAt         time.Time `json:"created_at"`
-	Currency          string    `json:"currency"`
-	DateOfBirth       string    `json:"date_of_birth"`
-	FirstName         string    `json:"first_name"`
-	ID                string    `json:"id"`
-	Language          string    `json:"language"`
-	LastName          string    `json:"last_name"`
-	Locale            string    `json:"locale"`
-	Note              string    `json:"note"`
-	OptOut            bool      `json:"opt_out"`
-	OriginalReference string    `json:"original_reference"`
-	SourceID          string    `json:"source_id"`
-	Status            string    `json:"status"`
-	Type              string    `json:"type"`
-	UpdatedAt         time.Time `json:"updated_at"`
-	URL               string    `json:"url"`
+	Active            bool       `json:"active,omitempty"`
+	Contact           Contact    `json:"contact,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	Currency          string     `json:"currency,omitempty"`
+	DateOfBirth       string     `json:"date_of_birth,omitempty"`
+	FirstName         string     `json:"first_name,omitempty"`
+	ID                string     `json:"id"`
+	Language          string     `json:"language,omitempty"`
+	LastName          string     `json:"last_name,omitempty"`
+	Locale            string     `json:"locale,omitempty"`
+	Note              string     `json:"note,omitempty"`
+	OptOut            bool       `json:"opt_out,omitempty"`
+	OriginalReference string     `json:"original_reference,omitempty"`
+	SourceID          string     `json:"source_id,omitempty"`
+	Status            string     `json:"status,omitempty"`
+	Type              string     `json:"type,omitempty"`
+	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
+	URL               string     `json:"url,omitempty"`
 }
 
 // A Category represents a product category model from the itembase API.
 type Category struct {
-	CategoryID string `json:"category_id"`
-	Language   string `json:"language"`
-	Value      string `json:"value"`
+	CategoryID string `json:"category_id,omitempty"`
+	Language   string `json:"language,omitempty"`
+	Value      string `json:"value,omitempty"`
 }
 
 // A ProductDescription represents a product description model from the itembase
 // API, which may be in a specified language.
 type ProductDescription struct {
-	Language string `json:"language"`
-	Value    string `json:"value"`
+	Language string `json:"language,omitempty"`
+	Value    string `json:"value,omitempty"`
 }
 
 // A Brand represents a product brand model from the itembase API.
 type Brand struct {
 	Name struct {
-		Language string `json:"language"`
-		Value    string `json:"value"`
-	} `json:"name"`
+		Language string `json:"language,omitempty"`
+		Value    string `json:"value,omitempty"`
+	} `json:"name,omitempty"`
 }
 
 // A Product represents a product entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Product struct {
-	Active      bool                 `json:"active"`
-	Brand       Brand                `json:"brand"`
-	Categories  []Category           `json:"categories"`
-	Condition   string               `json:"condition"`
-	CreatedAt   time.Time            `json:"created_at"`
-	Currency    string               `json:"currency"`
-	Description []ProductDescription `json:"description"`
+	Active      bool                 `json:"active,omitempty"`
+	Brand       Brand                `json:"brand,omitempty"`
+	Categories  []Category           `json:"categories,omitempty"`
+	Condition   string               `json:"condition,omitempty"`
+	CreatedAt   *time.Time           `json:"created_at,omitempty"`
+	Currency    string               `json:"currency,omitempty"`
+	Description []ProductDescription `json:"description,omitempty"`
 	ID          string               `json:"id"`
 	Identifier  struct {
-		ID string `json:"id"`
-	} `json:"identifier"`
+		ID string `json:"id,omitempty"`
+	} `json:"identifier,omitempty"`
 	Name []struct {
-		Language string `json:"language"`
-		Value    string `json:"value"`
-	} `json:"name"`
-	OriginalReference string `json:"original_reference"`
+		Language string `json:"language,omitempty"`
+		Value    string `json:"value,omitempty"`
+	} `json:"name,omitempty"`
+	OriginalReference string `json:"original_reference,omitempty"`
 	PictureUrls       []struct {
-		URLOriginal string `json:"url_original"`
-	} `json:"picture_urls"`
-	PricePerUnit float64 `json:"price_per_unit"`
+		URLOriginal string `json:"url_original,omitempty"`
+	} `json:"picture_urls,omitempty"`
+	PricePerUnit float64 `json:"price_per_unit,omitempty"`
 	Shipping     []struct {
-		Price           float64 `json:"price"`
-		ShippingService string  `json:"shipping_service"`
-	} `json:"shipping"`
-	SourceID         string `json:"source_id"`
+		Price           float64 `json:"price,omitempty"`
+		ShippingService string  `json:"shipping_service,omitempty"`
+	} `json:"shipping,omitempty"`
+	SourceID         string `json:"source_id,omitempty"`
 	StockInformation struct {
-		InStock        bool    `json:"in_stock"`
-		InventoryLevel float64 `json:"inventory_level"`
-		InventoryUnit  string  `json:"inventory_unit"`
-	} `json:"stock_information"`
-	Tax       float64       `json:"tax"`
-	TaxRate   float64       `json:"tax_rate"`
-	UpdatedAt time.Time     `json:"updated_at"`
-	URL       string        `json:"url"`
-	Variants  []interface{} `json:"variants"`
+		InStock        bool    `json:"in_stock,omitempty"`
+		InventoryLevel float64 `json:"inventory_level,omitempty"`
+		InventoryUnit  string  `json:"inventory_unit,omitempty"`
+	} `json:"stock_information,omitempty"`
+	Tax       float64       `json:"tax,omitempty"`
+	TaxRate   float64       `json:"tax_rate,omitempty"`
+	UpdatedAt *time.Time    `json:"updated_at,omitempty"`
+	URL       string        `json:"url,omitempty"`
+	Variants  []interface{} `json:"variants,omitempty"`
 }
 
 func (product *Product) InStock() bool {
@@ -147,7 +147,6 @@ func (product *Product) InStock() bool {
 }
 
 // Returns name for specified preferred language if present
-// preferredLanguage is expected as 2 letter string
 func (product *Product) GetName(preferredLanguage string) (name string, ok bool) {
 
 	for _, productName := range product.Name {
@@ -180,33 +179,33 @@ func cleanItembaseUnicode(str string) string {
 // Billing represents a model from the itembase API containing the billing
 // address of a Transaction.
 type Billing struct {
-	Address Address `json:"address"`
+	Address Address `json:"address,omitempty"`
 }
 
 // A Transaction represents a transaction entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Transaction struct {
-	Billing           Billing   `json:"billing"`
-	Buyer             Buyer     `json:"buyer"`
-	CreatedAt         time.Time `json:"created_at"`
-	Currency          string    `json:"currency"`
-	ID                string    `json:"id"`
-	OriginalReference string    `json:"original_reference"`
-	Products          []Product `json:"products"`
+	Billing           Billing    `json:"billing,omitempty"`
+	Buyer             Buyer      `json:"buyer,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	Currency          string     `json:"currency,omitempty"`
+	ID                string     `json:"id"`
+	OriginalReference string     `json:"original_reference,omitempty"`
+	Products          []Product  `json:"products,omitempty"`
 	Shipping          struct {
-		Address Address `json:"address"`
-	} `json:"shipping"`
-	SourceID string `json:"source_id"`
+		Address Address `json:"address,omitempty"`
+	} `json:"shipping,omitempty"`
+	SourceID string `json:"source_id,omitempty"`
 	Status   struct {
-		Global   string `json:"global"`
-		Payment  string `json:"payment"`
-		Shipping string `json:"shipping"`
-	} `json:"status"`
-	TotalPrice    float64   `json:"total_price"`
-	TotalPriceNet float64   `json:"total_price_net"`
-	TotalTax      float64   `json:"total_tax"`
-	UpdatedAt     time.Time `json:"updated_at"`
+		Global   string `json:"global,omitempty"`
+		Payment  string `json:"payment,omitempty"`
+		Shipping string `json:"shipping,omitempty"`
+	} `json:"status,omitempty"`
+	TotalPrice    float64    `json:"total_price,omitempty"`
+	TotalPriceNet float64    `json:"total_price_net,omitempty"`
+	TotalTax      float64    `json:"total_tax,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }
 
 func (t *Transaction) Completed() bool {
@@ -319,17 +318,18 @@ func (buyers *Buyers) ByShop(shopID string) (filteredBuyers Buyers) {
 // the "me" endpoint.
 type User struct {
 	UUID              string `json:"uuid"`
-	Username          string `json:"username"`
-	FirstName         string `json:"first_name"`
-	LastName          string `json:"last_name"`
-	MiddleName        string `json:"middle_name"`
-	NameFormat        string `json:"name_format"`
-	Locale            string `json:"locale"`
-	Email             string `json:"email"`
-	PreferredCurrency string `json:"preferred_currency"`
+	Username          string `json:"username,omitempty"`
+	FirstName         string `json:"first_name,omitempty"`
+	LastName          string `json:"last_name,omitempty"`
+	MiddleName        string `json:"middle_name,omitempty"`
+	NameFormat        string `json:"name_format,omitempty"`
+	Locale            string `json:"locale,omitempty"`
+	Email             string `json:"email,omitempty"`
+	PreferredCurrency string `json:"preferred_currency,omitempty"`
 }
 
 func convertTo(inputInterface, outputType interface{}) {
+
 	jsonBLOB, err := json.Marshal(inputInterface)
 	if err != nil {
 		log.Fatal(err)
@@ -339,4 +339,5 @@ func convertTo(inputInterface, outputType interface{}) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
