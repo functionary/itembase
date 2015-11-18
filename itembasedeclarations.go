@@ -66,7 +66,8 @@ func (buyer *Buyer) GetEmail() (Email string) {
 	return ""
 }
 
-// GetEmail returns the Email for a Buyer Profile
+// GetName returns a string with a combined FirstName and
+// LastName of a Buyer Profile
 func (buyer *Buyer) GetName() string {
 	return buyer.FirstName + " " + buyer.LastName
 }
