@@ -4,6 +4,8 @@ package itembase
 import (
 	"encoding/json"
 	"time"
+
+	log "github.com/inconshreveable/log15"
 )
 
 // Error is a Go representation of the error message sent back by itembase when a
@@ -132,21 +134,32 @@ func (c *client) GetAllInto(destination interface {
 		}
 	}
 
+	log.Debug("Documents", "found", response.NumDocumentsFound)
+	log.Debug("Documents", "returned", response.NumDocumentsReturned)
+
 	if response.NumDocumentsFound == response.NumDocumentsReturned {
+		log.Debug("same amount of documents that were found as returned")
 		return
 	} else {
 		DocumentsReceived = response.NumDocumentsReturned
 		TotalDocuments := response.NumDocumentsFound
+		log.Debug("expecting to receive", "NumDocumentsFound", response.NumDocumentsFound)
 
 		for DocumentsReceived < TotalDocuments {
+
+			log.Debug("expecting", "TotalDocuments", TotalDocuments)
+
 			if c.max > 0 {
+				log.Debug("Max", "max", c.max)
 				if DocumentsReceived >= c.max {
+					log.Debug("Max is reached", "DocumentsReceived", DocumentsReceived)
 					return
 				}
 			}
 
 			if _, ok := c.params["created_at_from"]; ok {
 				if c.params["created_at_from"] == destination.MaxCreatedAt().Format(time.RFC3339) {
+					log.Error("created_at_from equals to previous created_at_from - We got a loop?", "created_at_from", c.params["created_at_from"])
 					return
 				}
 			}
@@ -154,7 +167,15 @@ func (c *client) GetAllInto(destination interface {
 			c = c.clientWithNewParam("start_at_document", DocumentsReceived)
 			err = c.api.Call("GET", c.url, c.auth, nil, c.params, &response)
 
+			if err != nil {
+				log.Error("Error when retrieving paginated results", "error", err)
+			}
+
+			log.Debug("Documents", "found", response.NumDocumentsFound)
+			log.Debug("Documents", "returned", response.NumDocumentsReturned)
+
 			if len(response.Documents) == 0 {
+				log.Debug("no documents in response", "response.Documents", len(response.Documents))
 				return
 			}
 
@@ -162,16 +183,22 @@ func (c *client) GetAllInto(destination interface {
 			for _, document := range response.Documents {
 				if destination.Add != nil {
 					destination.Add(document)
+					if err != nil {
+						log.Info("Error when adding document", "error", err)
+					}
 				}
 			}
 
 			if DocumentsReceived == destination.Count() {
+				log.Error("Same amount of documents in destination interface as before. Can happen due to created_at collission during pagination.")
 				return
 			}
 
+			log.Debug("Documents", "saved", destination.Count())
 			DocumentsReceived = destination.Count()
 
 			if len(response.Documents) == 1 {
+				log.Debug("only 1 document in response", "response.Documents", len(response.Documents))
 				return
 			}
 
