@@ -119,7 +119,10 @@ func (c *client) GetAllInto(destination interface {
 
 	for _, document := range response.Documents {
 		if destination.Add != nil {
-			destination.Add(document)
+			err = destination.Add(document)
+			if err != nil {
+				log.Info("Error when adding document", "error", err)
+			}
 		}
 	}
 
