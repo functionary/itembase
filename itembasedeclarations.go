@@ -319,8 +319,33 @@ func (transactions *Transactions) Count() int {
 	return len(transactions.Transactions)
 }
 
+// Return date of heighest Created At transaction
+func (transactions *Transactions) MaxCreatedAt() time.Time {
+	var maxCreatedAt time.Time
+
+	for _, transaction := range transactions.Transactions {
+		if transaction.CreatedAt.After(maxCreatedAt) {
+			maxCreatedAt = *transaction.CreatedAt
+		}
+	}
+
+	return maxCreatedAt
 }
 
+// Return date of heighest Updated At transaction
+func (transactions *Transactions) MaxUpdatedAt() time.Time {
+	var maxUpdatedAt time.Time
+
+	for _, transaction := range transactions.Transactions {
+		if transaction.UpdatedAt != nil && transaction.UpdatedAt.After(maxUpdatedAt) {
+			maxUpdatedAt = *transaction.UpdatedAt
+		}
+	}
+
+	return maxUpdatedAt
+}
+
+// Return only completed transactions
 func (transactions *Transactions) Completed() (filteredTransactions Transactions) {
 	for _, transaction := range transactions.Transactions {
 		if transaction.Completed() {
@@ -366,7 +391,30 @@ func (profiles *Profiles) Count() int {
 	return len(profiles.Profiles)
 }
 
+// Return date of heighest Created At profile
+func (profiles *Profiles) MaxCreatedAt() time.Time {
+	var maxCreatedAt time.Time
 
+	for _, profile := range profiles.Profiles {
+		if profile.CreatedAt.After(maxCreatedAt) {
+			maxCreatedAt = *profile.CreatedAt
+		}
+	}
+
+	return maxCreatedAt
+}
+
+// Return date of heighest Updated At profile
+func (profiles *Profiles) MaxUpdatedAt() time.Time {
+	var maxUpdatedAt time.Time
+
+	for _, profile := range profiles.Profiles {
+		if profile.UpdatedAt != nil && profile.UpdatedAt.After(maxUpdatedAt) {
+			maxUpdatedAt = *profile.UpdatedAt
+		}
+	}
+
+	return maxUpdatedAt
 }
 
 // Products is a container for pagination of Product entities.
@@ -404,6 +452,30 @@ func (products *Products) Count() int {
 	return len(products.Products)
 }
 
+// Return date of heighest Created At product
+func (products *Products) MaxCreatedAt() time.Time {
+	var maxCreatedAt time.Time
+
+	for _, product := range products.Products {
+		if product.CreatedAt.After(maxCreatedAt) {
+			maxCreatedAt = *product.CreatedAt
+		}
+	}
+
+	return maxCreatedAt
+}
+
+// Return date of heighest Updated At product
+func (products *Products) MaxUpdatedAt() time.Time {
+	var maxUpdatedAt time.Time
+
+	for _, product := range products.Products {
+		if product.UpdatedAt != nil && product.UpdatedAt.After(maxUpdatedAt) {
+			maxUpdatedAt = *product.UpdatedAt
+		}
+	}
+
+	return maxUpdatedAt
 }
 
 func (products *Products) InStock() (filteredProducts Products) {
@@ -460,7 +532,30 @@ func (buyers *Buyers) Count() int {
 	return len(buyers.Buyers)
 }
 
+// Return date of heighest Created At buyer
+func (buyers *Buyers) MaxCreatedAt() time.Time {
+	var maxCreatedAt time.Time
 
+	for _, buyer := range buyers.Buyers {
+		if buyer.CreatedAt.After(maxCreatedAt) {
+			maxCreatedAt = *buyer.CreatedAt
+		}
+	}
+
+	return maxCreatedAt
+}
+
+// Return date of heighest Updated At buyer
+func (buyers *Buyers) MaxUpdatedAt() time.Time {
+	var maxUpdatedAt time.Time
+
+	for _, buyer := range buyers.Buyers {
+		if buyer.UpdatedAt != nil && buyer.UpdatedAt.After(maxUpdatedAt) {
+			maxUpdatedAt = *buyer.UpdatedAt
+		}
+	}
+
+	return maxUpdatedAt
 }
 
 func (buyers *Buyers) ByShop(shopID string) (filteredBuyers Buyers) {
