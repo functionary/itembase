@@ -229,20 +229,20 @@ func (c *client) Select(prop string) Client {
 	return c
 }
 
-func (c *client) CreatedAtFrom(value string) Client {
-	return c.clientWithNewParam("created_at_from", value)
+func (c *client) CreatedAtFrom(value time.Time) Client {
+	return c.clientWithNewParam("created_at_from", value.Format(time.RFC3339Nano))
 }
 
-func (c *client) CreatedAtTo(value string) Client {
-	return c.clientWithNewParam("created_at_to", value)
+func (c *client) CreatedAtTo(value time.Time) Client {
+	return c.clientWithNewParam("created_at_to", value.Format(time.RFC3339Nano))
 }
 
-func (c *client) UpdatedAtFrom(value string) Client {
-	return c.clientWithNewParam("updated_at_from", value)
+func (c *client) UpdatedAtFrom(value time.Time) Client {
+	return c.clientWithNewParam("updated_at_from", value.Format(time.RFC3339Nano))
 }
 
-func (c *client) UpdatedAtTo(value string) Client {
-	return c.clientWithNewParam("updated_at_to", value)
+func (c *client) UpdatedAtTo(value time.Time) Client {
+	return c.clientWithNewParam("updated_at_to", value.Format(time.RFC3339Nano))
 }
 
 func (c *client) Limit(limit uint) Client {
