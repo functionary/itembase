@@ -61,17 +61,6 @@ type Contact struct {
 	Phones []interface{} `json:"phones,omitempty"`
 }
 
-// GetEmail returns the Email for a Buyer Profile
-func (buyer *Buyer) GetEmail() (Email string) {
-	if len(buyer.Contact.Emails) > 0 {
-		for _, EmailValue := range buyer.Contact.Emails {
-			return EmailValue.Value
-		}
-	}
-
-	return ""
-}
-
 // GetName returns a string with a combined FirstName and
 // LastName of a Buyer Profile
 func (buyer *Buyer) GetName() string {
@@ -106,6 +95,28 @@ type Buyer struct {
 	Type              string     `json:"type,omitempty"`
 	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
 	URL               string     `json:"url,omitempty"`
+}
+
+// GetEmail returns an Email for a Profile
+func (buyer *Buyer) GetEmail() string {
+	if len(buyer.Contact.Emails) > 0 {
+		for _, EmailValue := range buyer.Contact.Emails {
+			return EmailValue.Value
+		}
+	}
+
+	return ""
+}
+
+// GetEmails returns all Emails for a Profile
+func (buyer *Buyer) GetEmails() (emails []string) {
+	if len(buyer.Contact.Emails) > 0 {
+		for _, EmailValue := range buyer.Contact.Emails {
+			emails = append(emails, EmailValue.Value)
+		}
+	}
+
+	return
 }
 
 // A Category represents a product category model from the itembase API.
