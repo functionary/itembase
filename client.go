@@ -103,7 +103,10 @@ func (c *client) Get() (destination interface{}, err error) {
 }
 
 func (c *client) GetAllInto(destination interface {
-	Add(interface{})
+	Add(interface{}) error
+	Count() int
+	MaxCreatedAt() time.Time
+	MaxUpdatedAt() time.Time
 }) (err error) {
 
 	var response ItembaseResponse
