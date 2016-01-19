@@ -11,6 +11,12 @@ import (
 // Some of the implementation detail structs (Contacts, Billing, pagination
 // containers, etc.) could perhaps be unexported.
 
+type ProfileID string
+
+func (profileID ProfileID) String() string {
+	return string(profileID)
+}
+
 // A Profile represents a user profile entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
@@ -23,7 +29,7 @@ type Profile struct {
 	CreatedAt         *time.Time `json:"created_at,omitempty"`
 	Currency          string     `json:"currency,omitempty"`
 	DisplayName       string     `json:"display_name,omitempty"`
-	ID                string     `json:"id"`
+	ID                ProfileID  `json:"id"`
 	Language          string     `json:"language,omitempty"`
 	Locale            string     `json:"locale,omitempty"`
 	OriginalReference string     `json:"original_reference,omitempty"`
@@ -72,6 +78,12 @@ func (buyer *Buyer) GetName() string {
 	return buyer.FirstName + " " + buyer.LastName
 }
 
+type BuyerID string
+
+func (buyerID BuyerID) String() string {
+	return string(buyerID)
+}
+
 // A Buyer represents a buyer entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
@@ -82,7 +94,7 @@ type Buyer struct {
 	Currency          string     `json:"currency,omitempty"`
 	DateOfBirth       string     `json:"date_of_birth,omitempty"`
 	FirstName         string     `json:"first_name,omitempty"`
-	ID                string     `json:"id"`
+	ID                BuyerID    `json:"id"`
 	Language          string     `json:"language,omitempty"`
 	LastName          string     `json:"last_name,omitempty"`
 	Locale            string     `json:"locale,omitempty"`
@@ -118,6 +130,22 @@ type Brand struct {
 	} `json:"name,omitempty"`
 }
 
+type Identifier struct {
+	ID string `json:"id,omitempty"`
+}
+
+type StockInformation struct {
+	InStock        bool    `json:"in_stock,omitempty"`
+	InventoryLevel float64 `json:"inventory_level,omitempty"`
+	InventoryUnit  string  `json:"inventory_unit,omitempty"`
+}
+
+type ProductID string
+
+func (productID ProductID) String() string {
+	return string(productID)
+}
+
 // A Product represents a product entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
@@ -129,11 +157,9 @@ type Product struct {
 	CreatedAt   *time.Time           `json:"created_at,omitempty"`
 	Currency    string               `json:"currency,omitempty"`
 	Description []ProductDescription `json:"description,omitempty"`
-	ID          string               `json:"id"`
-	Identifier  struct {
-		ID string `json:"id,omitempty"`
-	} `json:"identifier,omitempty"`
-	Name []struct {
+	ID          ProductID            `json:"id"`
+	Identifier  Identifier           `json:"identifier,omitempty"`
+	Name        []struct {
 		Language string `json:"language,omitempty"`
 		Value    string `json:"value,omitempty"`
 	} `json:"name,omitempty"`
@@ -146,17 +172,13 @@ type Product struct {
 		Price           float64 `json:"price,omitempty"`
 		ShippingService string  `json:"shipping_service,omitempty"`
 	} `json:"shipping,omitempty"`
-	SourceID         string `json:"source_id,omitempty"`
-	StockInformation struct {
-		InStock        bool    `json:"in_stock,omitempty"`
-		InventoryLevel float64 `json:"inventory_level,omitempty"`
-		InventoryUnit  string  `json:"inventory_unit,omitempty"`
-	} `json:"stock_information,omitempty"`
-	Tax       float64       `json:"tax,omitempty"`
-	TaxRate   float64       `json:"tax_rate,omitempty"`
-	UpdatedAt *time.Time    `json:"updated_at,omitempty"`
-	URL       string        `json:"url,omitempty"`
-	Variants  []interface{} `json:"variants,omitempty"`
+	SourceID         string           `json:"source_id,omitempty"`
+	StockInformation StockInformation `json:"stock_information,omitempty"`
+	Tax              float64          `json:"tax,omitempty"`
+	TaxRate          float64          `json:"tax_rate,omitempty"`
+	UpdatedAt        *time.Time       `json:"updated_at,omitempty"`
+	URL              string           `json:"url,omitempty"`
+	Variants         []interface{}    `json:"variants,omitempty"`
 }
 
 func (product *Product) InStock() bool {
@@ -199,30 +221,41 @@ type Billing struct {
 	Address Address `json:"address,omitempty"`
 }
 
+type Shipping struct {
+	Address Address `json:"address,omitempty"`
+}
+
+// Status describes a transactions' status
+type Status struct {
+	Global   string `json:"global,omitempty"`
+	Payment  string `json:"payment,omitempty"`
+	Shipping string `json:"shipping,omitempty"`
+}
+
+type TransactionID string
+
+func (transactionID TransactionID) String() string {
+	return string(transactionID)
+}
+
 // A Transaction represents a transaction entity from the itembase API.
 //
 // See http://sandbox.api.itembase.io/swagger-ui/
 type Transaction struct {
-	Billing           Billing    `json:"billing,omitempty"`
-	Buyer             Buyer      `json:"buyer,omitempty"`
-	CreatedAt         *time.Time `json:"created_at,omitempty"`
-	Currency          string     `json:"currency,omitempty"`
-	ID                string     `json:"id"`
-	OriginalReference string     `json:"original_reference,omitempty"`
-	Products          []Product  `json:"products,omitempty"`
-	Shipping          struct {
-		Address Address `json:"address,omitempty"`
-	} `json:"shipping,omitempty"`
-	SourceID string `json:"source_id,omitempty"`
-	Status   struct {
-		Global   string `json:"global,omitempty"`
-		Payment  string `json:"payment,omitempty"`
-		Shipping string `json:"shipping,omitempty"`
-	} `json:"status,omitempty"`
-	TotalPrice    float64    `json:"total_price,omitempty"`
-	TotalPriceNet float64    `json:"total_price_net,omitempty"`
-	TotalTax      float64    `json:"total_tax,omitempty"`
-	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
+	Billing           Billing       `json:"billing,omitempty"`
+	Buyer             Buyer         `json:"buyer,omitempty"`
+	CreatedAt         *time.Time    `json:"created_at,omitempty"`
+	Currency          string        `json:"currency,omitempty"`
+	ID                TransactionID `json:"id"`
+	OriginalReference string        `json:"original_reference,omitempty"`
+	Products          []Product     `json:"products,omitempty"`
+	Shipping          Shipping      `json:"shipping,omitempty"`
+	SourceID          string        `json:"source_id,omitempty"`
+	Status            Status        `json:"status,omitempty"`
+	TotalPrice        float64       `json:"total_price,omitempty"`
+	TotalPriceNet     float64       `json:"total_price_net,omitempty"`
+	TotalTax          float64       `json:"total_tax,omitempty"`
+	UpdatedAt         *time.Time    `json:"updated_at,omitempty"`
 }
 
 func (t *Transaction) Completed() bool {
