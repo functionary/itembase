@@ -1,6 +1,10 @@
 package itembase
 
-import "golang.org/x/oauth2"
+import (
+	"time"
+
+	"golang.org/x/oauth2"
+)
 
 // A Config structure is used to configure an itembase Client instance.
 type Config struct {
@@ -42,7 +46,10 @@ type Client interface {
 	// Paginates through all possible values from client, and unmarshals
 	// into the passed in destination
 	GetAllInto(destination interface {
-		Add(interface{})
+		Add(interface{}) error
+		Count() int
+		MaxCreatedAt() time.Time
+		MaxUpdatedAt() time.Time
 	}) error
 
 	// Gets values referenced by the client, and returns them as generic interface(!)
