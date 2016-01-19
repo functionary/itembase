@@ -140,7 +140,7 @@ func (c *client) HandleOAuthCode(authcode string) (*oauth2.Token, error) {
 	token, err := config.Exchange(oauth2.NoContext, authcode)
 
 	if err != nil {
-		log.Fatalf("Exchange error when handling OAuthCode: %v", err)
+		log.Fatalln("Exchange error when handling OAuthCode:", err)
 		return nil, err
 	}
 
@@ -177,11 +177,12 @@ func (c *client) getUserToken(userID string) (token *oauth2.Token) {
 	token, err = client.Transport.(*oauth2.Transport).Source.Token()
 
 	if err != nil {
+		log.Println("Exchange error when getting Token:", err)
 		if token, err = c.newUserToken(oauth2.NoContext, config, userID); err != nil {
 			return
 		}
 		if err != nil {
-			log.Fatal("Exchange error when getting User Token:", err)
+			log.Fatalln("Exchange error when getting User Token:", err)
 		}
 	} else {
 		c.SaveToken(userID, token)
