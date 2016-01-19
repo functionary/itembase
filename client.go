@@ -152,6 +152,21 @@ func (c *client) GetAllInto(destination interface {
 	return
 }
 
+func (c *client) Found() (count int, err error) {
+
+	var response ItembaseResponse
+
+	d := c.clientWithNewParam("limit", 1)
+	err = d.api.Call("GET", d.url, d.auth, nil, d.params, &response)
+
+	if err != nil {
+		return
+	}
+
+	count = response.NumDocumentsFound
+	return
+}
+
 func (c *client) Me() (destination User, err error) {
 	err = c.api.Call("GET", c.me, c.auth, nil, c.params, &destination)
 	return
