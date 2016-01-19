@@ -304,6 +304,21 @@ func (transactions *Transactions) Add(transaction interface{}) error {
 
 }
 
+func (transactions *Transactions) Exists(searchTransaction Transaction) bool {
+
+	for _, transaction := range transactions.Transactions {
+		if searchTransaction.ID == transaction.ID {
+			log.Println("Transaction already exists in collection")
+			return true
+		}
+	}
+	return false
+}
+
+func (transactions *Transactions) Count() int {
+	return len(transactions.Transactions)
+}
+
 }
 
 func (transactions *Transactions) Completed() (filteredTransactions Transactions) {
@@ -336,6 +351,21 @@ func (profiles *Profiles) Add(profile interface{}) error {
 
 }
 
+func (profiles *Profiles) Exists(searchProfile Profile) bool {
+
+	for _, profile := range profiles.Profiles {
+		if searchProfile.ID == profile.ID {
+			log.Println("Profile already exists in collection")
+			return true
+		}
+	}
+	return false
+}
+
+func (profiles *Profiles) Count() int {
+	return len(profiles.Profiles)
+}
+
 
 }
 
@@ -357,6 +387,21 @@ func (products *Products) Add(product interface{}) error {
 	}
 	return nil
 
+}
+
+func (products *Products) Exists(searchProduct Product) bool {
+
+	for _, product := range products.Products {
+		if searchProduct.ID == product.ID {
+			log.Println("Product already exists in collection", searchProduct.ID, product.ID)
+			return true
+		}
+	}
+	return false
+}
+
+func (products *Products) Count() int {
+	return len(products.Products)
 }
 
 }
@@ -398,6 +443,21 @@ func (buyers *Buyers) Add(buyer interface{}) error {
 	}
 	return nil
 
+}
+
+func (buyers *Buyers) Exists(searchBuyer Buyer) bool {
+
+	for _, buyer := range buyers.Buyers {
+		if searchBuyer.ID == buyer.ID {
+			log.Println("Buyer already exists in collection")
+			return true
+		}
+	}
+	return false
+}
+
+func (buyers *Buyers) Count() int {
+	return len(buyers.Buyers)
 }
 
 
