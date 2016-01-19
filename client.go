@@ -43,6 +43,10 @@ type client struct {
 
 	params  map[string]string
 	options Config
+
+	// maximum results to be returned
+	// default 0 = no maximum results set
+	max int
 }
 
 // New creates a new instance of the default itembase Client implementation.
@@ -87,6 +91,7 @@ func (c *client) User(user string) Client {
 	c.user = user
 	c.params = make(map[string]string)
 	c.url = c.root + "/users/" + user
+	c.max = 0
 	return c
 }
 
@@ -131,8 +136,20 @@ func (c *client) GetAllInto(destination interface {
 		return
 	} else {
 		DocumentsReceived = response.NumDocumentsReturned
+		TotalDocuments := response.NumDocumentsFound
 
-		for DocumentsReceived < response.NumDocumentsFound {
+		for DocumentsReceived < TotalDocuments {
+			if c.max > 0 {
+				if DocumentsReceived >= c.max {
+					return
+				}
+			}
+
+			if _, ok := c.params["created_at_from"]; ok {
+				if c.params["created_at_from"] == destination.MaxCreatedAt().Format(time.RFC3339) {
+					return
+				}
+			}
 
 			c = c.clientWithNewParam("start_at_document", DocumentsReceived)
 			err = c.api.Call("GET", c.url, c.auth, nil, c.params, &response)
@@ -147,6 +164,17 @@ func (c *client) GetAllInto(destination interface {
 					destination.Add(document)
 				}
 			}
+
+			if DocumentsReceived == destination.Count() {
+				return
+			}
+
+			DocumentsReceived = destination.Count()
+
+			if len(response.Documents) == 1 {
+				return
+			}
+
 		}
 	}
 
