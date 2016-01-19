@@ -289,11 +289,20 @@ type Transactions struct {
 	Transactions []Transaction `json:"documents"`
 }
 
-func (transactions *Transactions) Add(transaction interface{}) {
+func (transactions *Transactions) Add(transaction interface{}) error {
 
 	var newTransaction Transaction
-	convertTo(transaction, &newTransaction)
-	transactions.Transactions = append(transactions.Transactions, newTransaction)
+	err := ConvertTo(transaction, &newTransaction)
+	if err != nil {
+		log.Println("Error when converting", "error", err)
+		return err
+	}
+	if !transactions.Exists(newTransaction) {
+		transactions.Transactions = append(transactions.Transactions, newTransaction)
+	}
+	return nil
+
+}
 
 }
 
@@ -312,11 +321,21 @@ type Profiles struct {
 	Profiles []Profile `json:"documents"`
 }
 
-func (profiles *Profiles) Add(profile interface{}) {
+func (profiles *Profiles) Add(profile interface{}) error {
 
 	var newProfile Profile
-	convertTo(profile, &newProfile)
-	profiles.Profiles = append(profiles.Profiles, newProfile)
+	err := ConvertTo(profile, &newProfile)
+	if err != nil {
+		log.Println("Error when converting", "error", err)
+		return err
+	}
+	if !profiles.Exists(newProfile) {
+		profiles.Profiles = append(profiles.Profiles, newProfile)
+	}
+	return nil
+
+}
+
 
 }
 
@@ -325,11 +344,20 @@ type Products struct {
 	Products []Product `json:"documents"`
 }
 
-func (products *Products) Add(product interface{}) {
+func (products *Products) Add(product interface{}) error {
 
 	var newProduct Product
-	convertTo(product, &newProduct)
-	products.Products = append(products.Products, newProduct)
+	err := ConvertTo(product, &newProduct)
+	if err != nil {
+		log.Println("Error when converting", "error", err)
+		return err
+	}
+	if !products.Exists(newProduct) {
+		products.Products = append(products.Products, newProduct)
+	}
+	return nil
+
+}
 
 }
 
@@ -357,11 +385,21 @@ type Buyers struct {
 	Buyers []Buyer `json:"documents"`
 }
 
-func (buyers *Buyers) Add(buyer interface{}) {
+func (buyers *Buyers) Add(buyer interface{}) error {
 
 	var newBuyer Buyer
-	convertTo(buyer, &newBuyer)
-	buyers.Buyers = append(buyers.Buyers, newBuyer)
+	err := ConvertTo(buyer, &newBuyer)
+	if err != nil {
+		log.Println("Error when converting", "error", err)
+		return err
+	}
+	if !buyers.Exists(newBuyer) {
+		buyers.Buyers = append(buyers.Buyers, newBuyer)
+	}
+	return nil
+
+}
+
 
 }
 
