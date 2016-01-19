@@ -76,10 +76,10 @@ type Client interface {
 	User(path string) Client
 
 	Select(prop string) Client
-	CreatedAtFrom(value string) Client
-	CreatedAtTo(value string) Client
-	UpdatedAtFrom(value string) Client
-	UpdatedAtTo(value string) Client
+	CreatedAtFrom(value time.Time) Client
+	CreatedAtTo(value time.Time) Client
+	UpdatedAtFrom(value time.Time) Client
+	UpdatedAtTo(value time.Time) Client
 	Limit(limit uint) Client
 	Offset(offset uint) Client
 
