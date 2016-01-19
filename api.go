@@ -2,7 +2,9 @@ package itembase
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -54,6 +56,8 @@ func doItembaseRequest(client *http.Client, method, path, auth, accept string, b
 		req.Header.Add("Accept", accept)
 	}
 
+	req.Header.Add("Accept-Encoding", "gzip")
+
 	req.Close = true
 
 	return client.Do(req)
@@ -69,14 +73,21 @@ func (f *itembaseAPI) Call(method, path, auth string, body interface{}, params m
 
 	defer response.Body.Close()
 
-	//contents, _ := ioutil.ReadAll(response.Body)
-	// if err != nil {
-	// 	log.Printf("%s", err)
-	// 	os.Exit(1)
-	// }
-	//log.Printf("%s\n", string(contents))
+	// Check that the server actually sent compressed data
+	var reader io.ReadCloser
+	switch response.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err = gzip.NewReader(response.Body)
+		if err != nil {
+			log.Println("Error when decoding gzipped response body", err)
+			return err
+		}
+		defer reader.Close()
+	default:
+		reader = response.Body
+	}
 
-	decoder := json.NewDecoder(response.Body)
+	decoder := json.NewDecoder(reader)
 	if response.StatusCode >= 400 {
 		err := &Error{Code: response.StatusCode, Message: response.Status}
 		decoder.Decode(err)
