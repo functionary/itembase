@@ -52,6 +52,9 @@ type Client interface {
 		MaxUpdatedAt() time.Time
 	}) error
 
+	// Returns how many documents were found
+	Found() (count int, err error)
+
 	// Gets values referenced by the client, and returns them as generic interface(!)
 	Get() (destination interface{}, err error)
 
@@ -79,6 +82,8 @@ type Client interface {
 	UpdatedAtTo(value string) Client
 	Limit(limit uint) Client
 	Offset(offset uint) Client
+
+	Max(max int) Client
 
 	SaveToken(userID string, token *oauth2.Token) (err error)
 	GetCachedToken(userID string) (token *oauth2.Token, err error)
