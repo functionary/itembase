@@ -3,6 +3,7 @@ package itembase
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // Error is a Go representation of the error message sent back by itembase when a
@@ -251,4 +252,9 @@ func (c *client) Limit(limit uint) Client {
 
 func (c *client) Offset(offset uint) Client {
 	return c.clientWithNewParam("start_at_document", offset)
+}
+
+func (c *client) Max(max int) Client {
+	c.max = max
+	return c
 }
