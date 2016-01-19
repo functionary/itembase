@@ -389,16 +389,20 @@ type User struct {
 	PreferredCurrency string `json:"preferred_currency,omitempty"`
 }
 
-func convertTo(inputInterface, outputType interface{}) {
+func ConvertTo(inputInterface, outputType interface{}) error {
 
 	jsonBLOB, err := json.Marshal(inputInterface)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	err = json.Unmarshal(jsonBLOB, &outputType)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
+
+	return nil
 
 }
