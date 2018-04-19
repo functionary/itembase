@@ -171,7 +171,7 @@ func (c *client) getUserToken(userID string) (token *oauth2.Token) {
 
 	_, err = client.Get(c.me)
 	if err == nil {
-		fmt.Errorf("Fetch should return an error if no refresh token is set")
+		log.Errorf("Fetch should return an error if no refresh token is set")
 	}
 
 	token, err = client.Transport.(*oauth2.Transport).Source.Token()
